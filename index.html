@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker Form</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .step {
+            display: none; /* Hide all steps initially */
+        }
+        .step.active {
+            display: block; /* Show the active step */
+        }
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .navigation {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Fitness Tracker</h1>
+        <form id="fitnessForm" onsubmit="return handleSubmit(event)">
+            <!-- Step 1: Name -->
+            <div class="step active">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <!-- Step 2: Age Group -->
+            <div class="step">
+                <label for="age">Age Group</label>
+                <select id="age" name="age" required>
+                    <option value="">Select Age Group</option>
+                    <option value="Child (0-12)">Child (0-12)</option>
+                    <option value="Teen (13-19)">Teen (13-19)</option>
+                    <option value="Young Adult (20-35)">Young Adult (20-35)</option>
+                    <option value="Middle Aged (36-55)">Middle Aged (36-55)</option>
+                    <option value="Senior (55+)">Senior (55+)</option>
+                </select>
+            </div>
+
+            <!-- Step 3: Weight -->
+            <div class="step">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" name="weight" required placeholder="Enter your weight">
+            </div>
+
+            <!-- Step 4: Height -->
+            <div class="step">
+                <label for="height">Height (cm)</label>
+                <input type="number" id="height" name="height" required placeholder="Enter your height">
+            </div>
+
+            <!-- Step 5: Gender -->
+            <div class="step">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Step 6: City -->
+            <div class="step">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" required placeholder="Enter your city">
+            </div>
+
+            <!-- Step 7: Family History of Diseases -->
+            <div class="step">
+                <label>Do you have a family history of any of these diseases?</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="noneHistory" name="familyHistory" value="None"> None</label><br>
+                    <label><input type="checkbox" name="familyHistory" value="Diabetes"> Diabetes</label><br>
+                    <label><input type="checkbox" name="familyHistory" value="Blood Pressure"> Blood Pressure</label><br>
+                    <label><input type="checkbox" name="familyHistory" value="PCOD"> PCOD</label><br>
+                    <label><input type="checkbox" name="familyHistory" value="Thyroid"> Thyroid</label><br>
+                    <label><input type="checkbox" name="familyHistory" value="Cancer"> Cancer</label><br>
+                    <label><input type="checkbox" name="familyHistory" value="Other" id="otherDiseaseCheck"> Other</label><br>
+                    <input type="text" id="otherDiseaseText" name="familyHistoryOther" placeholder="Please specify" style="display:none;">
+                </div>
+            </div>
+
+            <!-- Step 8: Current Diseases -->
+            <div class="step">
+                <label>Are you currently suffering from any disease?</label>
+                <label><input type="radio" id="diseaseYes" name="currentDiseases" value="Yes" required> Yes</label>
+                <label><input type="radio" id="diseaseNo" name="currentDiseases" value="No" required> No</label><br>
+                <input type="text" id="diseaseDetails" name="currentDiseasesDetails" placeholder="Please specify" style="display:none;">
+            </div>
+
+            <!-- Step 9: Daily Activities -->
+            <div class="step">
+                <label for="dailyActivities">Daily Activities</label>
+                <select id="dailyActivities" name="dailyActivities" required>
+                    <option value="">Select Activity Level</option>
+                    <option value="Sedentary">Sedentary</option>
+                    <option value="Moderately Active">Moderately Active</option>
+                    <option value="Active">Active</option>
+                </select>
+            </div>
+
+            <!-- Step 10: Sleep -->
+            <div class="step">
+                <label for="sleep">Hours of Sleep</label>
+                <select id="sleep" name="sleep" required>
+                    <option value="">Select Sleep Duration</option>
+                    <option value="Less than 5 hours">Less than 5 hours</option>
+                    <option value="5-6 hours">5-6 hours</option>
+                    <option value="7-8 hours">7-8 hours</option>
+                    <option value="More than 8 hours">More than 8 hours</option>
+                </select>
+            </div>
+
+            <!-- Step 11: Water Intake -->
+            <div class="step">
+                <label for="waterIntake">Daily Water Intake (liters)</label>
+                <select id="waterIntake" name="waterIntake" required>
+                    <option value="">Select</option>
+                    <option value="1-2">1-2</option>
+                    <option value="2-3">2-3</option>
+                    <option value="3+">3+</option>
+                </select>
+            </div>
+
+            <!-- Step 12: Steps -->
+            <div class="step">
+                <label for="steps">Daily Steps</label>
+                <select id="steps" name="steps" required>
+                    <option value="">Select</option>
+                    <option value="Under 5,000">Under 5,000</option>
+                    <option value="5,000-10,000">5,000-10,000</option>
+                    <option value="Above 10,000">Above 10,000</option>
+                </select>
+            </div>
+
+            <!-- Step 13: Health Goals -->
+            <div class="step">
+                <label for="healthGoals">Health Goals</label>
+                <select id="healthGoals" name="healthGoals" required>
+                    <option value="">Select</option>
+                    <option value="Weight Loss">Weight Loss</option>
+                    <option value="Muscle Gain">Muscle Gain</option>
+                    <option value="Stay Healthy">Stay Healthy</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            </div>
+
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const steps = document.querySelectorAll('.step');
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+        const submitBtn = document.getElementById("submitBtn");
+
+        function showStep(step) {
+            steps.forEach((s, index) => {
+                s.style.display = index === step ? 'block' : 'none';
+            });
+            // Hide or show navigation buttons
+            prevBtn.style.display = step === 0 ? 'none' : 'inline';
+            nextBtn.style.display = step === steps.length - 1 ? 'none' : 'inline';
+            submitBtn.style.display = step === steps.length - 1 ? 'inline' : 'none';
+        }
+
+        function nextPrev(n) {
+            // Validate the current step
+            if (n === 1 && !validateCurrentStep()) {
+                return; // Don't proceed if validation fails
+            }
+            // Hide the current step
+            steps[currentStep].style.display = 'none';
+            // Update the current step
+            currentStep += n;
+            // Show the next step
+            showStep(currentStep);
+        }
+
+        function validateCurrentStep() {
+            const inputs = steps[currentStep].querySelectorAll('input, select');
+            let isValid = true;
+            inputs.forEach(input => {
+                if (input.required && !input.value) {
+                    isValid = false;
+                    input.classList.add('error'); // Add error styling (optional)
+                } else {
+                    input.classList.remove('error'); // Remove error styling (optional)
+                }
+            });
+            return isValid;
+        }
+
+        function handleSubmit(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(document.getElementById('fitnessForm'));
+    const data = {};
+
+    // Convert FormData to a JSON object
+    formData.forEach((value, key) => {
+        // Handle multiple values for 'familyHistory'
+        if (!data[key]) {
+            data[key] = value;
+        } else if (Array.isArray(data[key])) {
+            data[key].push(value);
+        } else {
+            data[key] = [data[key], value];
+        }
+    });
+
+    // Send data to the server
+    fetch('/submit-form', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Form submitted successfully!');
+            document.getElementById('fitnessForm').reset(); // Optionally reset the form
+        } else {
+            alert('Error submitting form: ' + response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting form: ' + error.message);
+    });
+}
+
+
+        // Show the first step initially
+        showStep(currentStep);
+    </script>
+</body>
+</html>
