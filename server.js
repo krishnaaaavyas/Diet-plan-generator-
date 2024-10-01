@@ -10,13 +10,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/mydatabase')
-  .then(() => {
-    console.log("Connected to MongoDB successfully");
-  })
-  .catch(err => {
-    console.error("Error connecting to MongoDB: ", err);
-  });
+mongoose.connect('mongodb://localhost:27017/mydatabase', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+    console.log("Connected to MongoDB");
+}).catch(err => {
+    console.error("MongoDB connection error: ", err);
+});
+// Check if the connection was successful
+mongoose.connection.on('connected', () => {
+  console.log('Connected to MongoDB successfully');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log('Error connecting to MongoDB:', err);
+});
+
 
 // Define Mongoose Schema for Fitness Tracker form
 const fitnessSchema = new mongoose.Schema({
@@ -26,7 +36,7 @@ const fitnessSchema = new mongoose.Schema({
   height: { type: Number, required: true },
   gender: { type: String, required: true },
   city: { type: String, required: true },
-  familyHistory: [String],
+  familyHistory: [String],  // Array of strings (checkboxes)
   currentDiseases: { type: String, required: true },
   currentDiseasesDetails: { type: String },
   dailyActivities: { type: String, required: true },
@@ -38,6 +48,11 @@ const fitnessSchema = new mongoose.Schema({
 
 // Mongoose Model
 const FitnessEntry = mongoose.model('FitnessEntry', fitnessSchema);
+// GET route for the root URL
+app.get('/', (req, res) => {
+  res.send('Welcome to the Fitness Tracker App!');
+});
+
 
 // POST route for form submission
 app.post('/submit-form', async (req, res) => {
