@@ -6,8 +6,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;  // Changed to 3001
 
 // Middleware
+const cors = require('cors');
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.get('/form', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
 
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/mydatabase', {
@@ -50,20 +55,19 @@ const fitnessSchema = new mongoose.Schema({
 const FitnessEntry = mongoose.model('FitnessEntry', fitnessSchema);
 // GET route for the root URL
 app.get('/', (req, res) => {
-  res.send('Welcome to the Fitness Tracker App!');
+  res.send('Welcome to the Diet Plan generator App!');
 });
 
 
 // POST route for form submission
 app.post('/submit-form', async (req, res) => {
-    const formData = new FitnessEntry(req.body);
-
-    try {
-        await formData.save();
-        res.status(201).send('Form submitted successfully!');
-    } catch (error) {
-        res.status(400).send('Error submitting form: ' + error.message);
-    }
+  try {
+      const formData = new FitnessEntry(req.body);
+      await formData.save();
+      res.status(201).send('Form submitted successfully!');
+  } catch (error) {
+      res.status(400).json({ error: 'Submission failed', details: error.message });
+  }
 });
 
 // Start the server
