@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         showStep(currentStep);
     }
-
+   
     // Show/hide "Other" input field in family history
     var otherDiseaseCheck = document.getElementById("otherDiseaseCheck");
     var otherDiseaseText = document.getElementById("otherDiseaseText");
@@ -79,7 +79,33 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error:', error);
             alert('Error submitting form');
         });
+        fetch('/submit-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formObject),  // Use formObject here
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Error: ${response.statusText}');
+            return response.json();
+        })
+        .then(result => alert('Form submitted successfully!'))
+        .catch(error => alert('Error submitting form: ' + error.message));;
+
     });
+    fetch('https://api.spoonacular.com/recipes/complexSearch', {
+        method: 'GET', // or 'POST' depending on your API
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer 138612bb38204b1a9b4682cfae4eaa00', // Use your actual API key here
+        },
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+
 
     window.nextPrev = nextPrev;
 });
